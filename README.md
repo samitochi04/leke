@@ -1,5 +1,8 @@
 # LEKE - AI Document Assistant
 
+<img width="788" height="506" alt="Screenshot 2025-07-26 002727" src="https://github.com/user-attachments/assets/f4118a4d-f5cb-41ba-b99b-c81036d74ad9" />
+
+
 A beautiful AI-powered web application that processes documents (PDFs, images, CSV files) and provides intelligent responses to user queries using DeepSeek API.
 
 ## Features
