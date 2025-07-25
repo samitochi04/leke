@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "timestamp": "2025-07-25T23:50:24.782727",
+    "prompt": "Please read my CV and summarize all the jobs title I can apply for",
+    "document_text": "DEVELOPPEUR SENIOR BACKEND\nSAMUEL FOTSO TEMEU\n+33 7 65 69 90 61 | temmodaryl317@gmail.com | Mobilité France | Disponibilité maintenant | GitHub | Linkedin\nPROFIL PROFESSIONNEL\nDéveloppeur backend expérimenté, spécialisé en conception d’architectures modulaires et évolutives. Maîtrise de\nNode.js, Python, Flask et SQL. Passionné par la performance et la qualité du code, je vise des projets backend\nambitieux et à fort impact.\nCOMPÉTENCES TECHNIQUES\nLangages et outils : Python (Flask, FastAPI), Node...",
+    "response": "Based on your CV, here are the job titles you can apply for, given your skills and experience:\n\n1. **Senior Backend Developer**  \n2. **Full Stack Developer**  \n3. **Lead Developer (Full Stack/Backend)**  \n4. **Data Scientist** (with a focus on backend/data tools)  \n5. **Backend Engineer** (specializing in Node.js, Python, or Flask)  \n6. **API Developer** (REST APIs, third-party integrations)  \n7. **Software Architect** (modular and scalable systems)  \n8. **DevOps Engineer** (Docker, automation pipelines)  \n9. **E-commerce Developer** (multi-vendor platforms)  \n10. **Machine Learning Engineer** (with backend/data analysis experience)  \n\nYour expertise in backend development, data science, full-stack projects, and leadership roles makes you a strong candidate for these positions. Let me know if you'd like further refinements!",
+    "has_document": true
+  },
+  {
+    "id": 2,
+    "timestamp": "2025-07-25T23:54:19.718213",
+    "prompt": "if I solve and master all the projects in this book, will I be a senior dev in python ? (please list all the exercises in bullet form)",
+    "document_text": "“Shaw_FM” — 2017/7/28 —\n16:59 — page 1 — #1\nLEARN MORE PYTHON 3\nTHE\nHARD WAY\n“Shaw_FM” — 2017/7/28 —\n16:59 — page 2 — #2\nZed Shaw’s Hard Way S eries emphasizes instruction and making  things as  \nthe best way to get started in many computer science topics. Each book in the \nseries is desig ned around short, understanda ble exercises that take you through a \ncourse of instruction that creates working soft ware. All exercises are thoroughly \ntested to verify they work with real students, t hus inc...",
+    "response": "Error calling DeepSeek API: 400 Client Error: Bad Request for url: https://api.deepseek.com/v1/chat/completions",
+    "has_document": true
+  },
+  {
+    "id": 3,
+    "timestamp": "2025-07-25T23:56:02.361804",
+    "prompt": "what do you see in this image ?",
+    "document_text": "Error extracting image text: tesseract is not installed or it's not in your PATH. See README file for more information.",
+    "response": "Based on the document content, it appears that the system encountered an error when trying to extract text from an image. The error message states: \n\n**\"Error extracting image text: tesseract is not installed or it's not in your PATH. See README file for more information.\"**\n\nThis means the system cannot analyze or describe what is in the image because the necessary software (Tesseract OCR) is either not installed or not properly configured on the system. \n\nTo resolve this issue, you would need to:\n1. Install Tesseract OCR (Optical Character Recognition) software.\n2. Ensure it is correctly added to your system's PATH so the program can access it.\n3. Refer to the README file mentioned for specific installation or setup instructions.\n\nUntil this is fixed, the system cannot provide any details about the content of the image. Let me know if you'd like guidance on installing Tesseract!",
+    "has_document": true
+  }
+]

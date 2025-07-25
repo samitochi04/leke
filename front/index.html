@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LEKE - AI Document Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .smooth-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .message-bubble {
+            animation: slideInUp 0.4s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .typing-indicator {
+            animation: pulse 2s infinite;
+        }
+
+        .file-drop-zone {
+            transition: all 0.3s ease;
+        }
+
+        .file-drop-zone.drag-over {
+            background: rgba(103, 126, 234, 0.1);
+            border-color: #667eea;
+            transform: scale(1.02);
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .loading-dots {
+            display: inline-block;
+        }
+
+        .loading-dots span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #667eea;
+            margin: 0 2px;
+            animation: loading 1.4s infinite ease-in-out both;
+        }
+
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes loading {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-lg border-b border-gray-200/50 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center">
+                        <i class="fas fa-brain text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">LEKE</h1>
+                        <p class="text-xs text-gray-500">AI Document Assistant</p>
+                    </div>
+                </div>
+                <button 
+                    id="clearHistoryButton"
+                    class="bg-red-50 text-red-600 px-4 py-2 rounded-lg hover:bg-red-100 smooth-transition flex items-center space-x-2"
+                >
+                    <i class="fas fa-trash-alt text-sm"></i>
+                    <span class="text-sm font-medium">Clear History</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Chat Container -->
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden">
+            <!-- Chat Messages -->
+            <div id="chatMessages" class="h-96 overflow-y-auto p-6 space-y-4 scrollbar-hide bg-gradient-to-b from-gray-50/30 to-white">
+                <!-- Welcome Message -->
+                <div class="text-center py-8">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-robot text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">Welcome to LEKE</h3>
+                    <p class="text-gray-600 text-sm max-w-md mx-auto">Upload a document (PDF, image, or CSV) and ask me anything about it. I'll analyze and provide intelligent responses.</p>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="border-t border-gray-200/50 p-6 bg-white">
+                <form id="chatForm" class="space-y-4">
+                    <!-- File Upload Area -->
+                    <div id="fileDropZone" class="file-drop-zone border-2 border-dashed border-gray-300 rounded-xl p-6 text-center smooth-transition">
+                        <input type="file" id="documentInput" name="document" accept=".pdf,.png,.jpg,.jpeg,.gif,.bmp,.csv" class="hidden">
+                        <div id="fileDropContent">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-3"></i>
+                            <p class="text-gray-600 font-medium">Drop your document here or <button type="button" id="browseButton" class="text-blue-600 hover:text-blue-700 underline">browse</button></p>
+                            <p class="text-sm text-gray-500 mt-1">Supports PDF, images, and CSV files</p>
+                        </div>
+                        <div id="filePreview" class="hidden">
+                            <div class="flex items-center justify-center space-x-3">
+                                <i class="fas fa-file text-2xl text-blue-600"></i>
+                                <div class="text-left">
+                                    <p id="fileName" class="font-medium text-gray-800"></p>
+                                    <p id="fileSize" class="text-sm text-gray-500"></p>
+                                </div>
+                                <button type="button" id="removeFileButton" class="text-red-500 hover:text-red-700 smooth-transition">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Message Input -->
+                    <div class="flex space-x-3">
+                        <div class="flex-1 relative">
+                            <textarea 
+                                id="promptInput" 
+                                name="prompt" 
+                                placeholder="Ask me anything about your document..."
+                                class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none smooth-transition"
+                                rows="2"
+                                required
+                            ></textarea>
+                        </div>
+                        <button 
+                            type="submit" 
+                            id="sendButton"
+                            class="px-6 py-3 gradient-bg text-white rounded-xl hover:opacity-90 smooth-transition flex items-center space-x-2 hover-lift disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            <i class="fas fa-paper-plane"></i>
+                            <span class="font-medium">Send</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-8 shadow-2xl">
+            <div class="text-center">
+                <div class="loading-dots mb-4">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <p class="text-gray-600 font-medium">Processing your request...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
